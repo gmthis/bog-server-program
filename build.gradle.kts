@@ -33,6 +33,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-logging")
     implementation("com.alibaba:fastjson:2.0.15")
     implementation("commons-io:commons-io:2.11.0")
+    implementation("commons-fileupload:commons-fileupload:1.4")
+    implementation("net.coobird:thumbnailator:0.4.17")
 }
 
 tasks.withType<KotlinCompile> {

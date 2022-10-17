@@ -5,6 +5,7 @@ import cn.xd.server.bog.util.IllegalParameterJson
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseBody
 import javax.annotation.Resource
 
@@ -13,14 +14,16 @@ import javax.annotation.Resource
 class CookieController {
 
     @Resource
-    lateinit var service: CookieService
+    private lateinit var service: CookieService
 
     @PostMapping(
         "/post/cookieGit",
         headers = ["Content-Type=application/x-www-form-urlencoded"]
     )
-    fun getCookieFrom(cdk: GetCookieRequest): String {
-        return service.newCookie()
+    fun getCookieFrom(
+        @RequestParam parameters: Map<String, Any>
+    ): String {
+        return getCookie(parameters)
     }
 
     @PostMapping(
@@ -28,8 +31,14 @@ class CookieController {
         headers = ["Content-Type=application/json"]
     )
     fun getCookieJson(
-        @RequestBody cdk: GetCookieRequest
+        @RequestBody parameters: Map<String, Any>
     ): String {
+        return getCookie(parameters)
+    }
+
+    private fun getCookie(
+        parameters: Map<String, Any>
+    ): String{
         return service.newCookie()
     }
 
@@ -38,9 +47,9 @@ class CookieController {
         headers = ["Content-Type=application/x-www-form-urlencoded"]
     )
     fun importCookieFrom(
-        importCookieRequest: ImportCookieRequest
+        @RequestParam parameters: Map<String, Any>
     ): String {
-        return importCookie(importCookieRequest)
+        return importCookie(parameters)
     }
 
     @PostMapping(
@@ -48,17 +57,19 @@ class CookieController {
         headers = ["Content-Type=application/json"]
     )
     fun importCookieJson(
-        @RequestBody importCookieRequest: ImportCookieRequest
+        @RequestBody parameters: Map<String, Any>
     ): String {
-        return importCookie(importCookieRequest)
+        return importCookie(parameters)
     }
 
     private fun importCookie(
-        importCookieRequest: ImportCookieRequest
+        parameters: Map<String, Any>
     ): String {
-        if (importCookieRequest.cookieadd == null) return IllegalParameterJson
-        val cookieAdd = importCookieRequest.cookieadd
-        val master = importCookieRequest.master ?: "0"
+        val cookieAdd = parameters["cookieadd"]
+        val _master = parameters["master"]
+
+        if (cookieAdd !is String || _master !is String?) return IllegalParameterJson
+        val master = _master ?: "0"
         return service.importCookie(master, cookieAdd)
     }
 
@@ -67,9 +78,9 @@ class CookieController {
         headers = ["Content-Type=application/x-www-form-urlencoded"]
     )
     fun removeCookieFrom(
-        removeCookieRequest: RemoveCookieRequest
+        @RequestParam parameters: Map<String, Any>
     ): String {
-        return removeCookie(removeCookieRequest)
+        return removeCookie(parameters)
     }
 
     @PostMapping(
@@ -77,23 +88,23 @@ class CookieController {
         headers = ["Content-Type=application/json"]
     )
     fun removeCookieJson(
-        @RequestBody removeCookieRequest: RemoveCookieRequest
+        @RequestBody parameters: Map<String, Any>
     ): String {
-        return removeCookie(removeCookieRequest)
+        return removeCookie(parameters)
     }
 
     private fun removeCookie(
-        removeCookieRequest: RemoveCookieRequest
+        parameters: Map<String, Any>
     ): String {
-        if (
-            removeCookieRequest.code == null ||
-            removeCookieRequest.cookie == null ||
-            removeCookieRequest.del == null ||
-            removeCookieRequest.cookie.length != 8 ||
-            removeCookieRequest.code.length != 32 ||
-            removeCookieRequest.del.length != 8
-        ) return IllegalParameterJson
-        return service.removeCookie(removeCookieRequest.code, removeCookieRequest.cookie, removeCookieRequest.del)
+        val masterToken = parameters["code"]
+        val masterCookie = parameters["cookie"]
+        val cookie = parameters["del"]
+
+        if (masterToken !is String || masterCookie !is String || cookie !is String || masterCookie.length != 8 ||
+                masterToken.length != 32 || cookie.length != 8)
+            return IllegalParameterJson
+
+        return service.removeCookie(masterToken, masterCookie, cookie)
     }
 
     @PostMapping(
@@ -101,9 +112,9 @@ class CookieController {
         headers = ["Content-Type=application/x-www-form-urlencoded"]
     )
     fun remarkCookieFrom(
-        remarkCookieRequest: RemarkCookieRequest
+        @RequestParam parameters: Map<String, Any>
     ): String{
-        return remarkCookie(remarkCookieRequest)
+        return remarkCookie(parameters)
     }
 
     @PostMapping(
@@ -111,28 +122,28 @@ class CookieController {
         headers = ["Content-Type=application/json"]
     )
     fun remarkCookieJson(
-        @RequestBody remarkCookieRequest: RemarkCookieRequest
+        @RequestBody parameters: Map<String, Any>
     ): String{
-        return remarkCookie(remarkCookieRequest)
+        return remarkCookie(parameters)
     }
 
     private fun remarkCookie(
-        remarkCookieRequest: RemarkCookieRequest
+        parameters: Map<String, Any>
     ): String{
-        if (
-            remarkCookieRequest.cookie == null ||
-            remarkCookieRequest.code == null ||
-            remarkCookieRequest.target == null ||
-            remarkCookieRequest.remarks == null ||
-            remarkCookieRequest.cookie.length != 8 ||
-            remarkCookieRequest.code.length != 32 ||
-            remarkCookieRequest.target.length != 8
-        ) return IllegalParameterJson
+        val masterCookie = parameters["cookie"]
+        val masterToken = parameters["code"]
+        val cookie = parameters["target"]
+        val remarks = parameters["remarks"]
+
+        if (masterCookie !is String || masterToken !is String || cookie !is String || remarks !is String ||
+                masterCookie.length != 8 || masterToken.length != 32 || cookie.length != 8)
+            return IllegalParameterJson
+
         return service.remarkCookie(
-            remarkCookieRequest.cookie,
-            remarkCookieRequest.code,
-            remarkCookieRequest.target,
-            remarkCookieRequest.remarks
+            masterCookie,
+            masterToken,
+            cookie,
+            remarks
         )
     }
 
@@ -141,9 +152,9 @@ class CookieController {
         headers = ["Content-Type=application/x-www-form-urlencoded"]
     )
     fun signInFrom(
-        signInRequest: SingInRequest
+        @RequestParam parameters: Map<String, Any>
     ): String{
-        return signIn(signInRequest)
+        return signIn(parameters)
     }
 
     @PostMapping(
@@ -151,47 +162,54 @@ class CookieController {
         headers = ["Content-Type=application/json"]
     )
     fun signInJson(
-        @RequestBody signInRequest: SingInRequest
+        @RequestBody parameters: Map<String, Any>
     ): String{
-        return signIn(signInRequest)
+        return signIn(parameters)
     }
 
     private fun signIn(
-        signInRequest: SingInRequest
+        parameters: Map<String, Any>
     ): String{
-        if (
-            signInRequest.code == null ||
-            signInRequest.cookie == null ||
-            signInRequest.cookie.length != 8 ||
-            signInRequest.code.length != 32
-        ) return IllegalParameterJson
-        return service.singIn(signInRequest.cookie, signInRequest.code)
+
+        val cookie = parameters["cookie"]
+        val token = parameters["code"]
+
+        if (cookie !is String || token !is String || cookie.length != 8 || token.length != 32)
+            return IllegalParameterJson
+
+        return service.singIn(cookie, token)
     }
+
+    @PostMapping(
+        "/api/userinfo",
+        headers = ["Content-Type=application/x-www-form-urlencoded"]
+    )
+    fun findCookieInfoFrom(
+        @RequestParam parameters: Map<String, Any>
+    ): String{
+        return findCookieInfo(parameters)
+    }
+
+    @PostMapping(
+        "/api/userinfo",
+        headers = ["Content-Type=application/json"]
+    )
+    fun findCookieInfoJson(
+        @RequestBody parameters: Map<String, Any>
+    ): String{
+       return findCookieInfo(parameters)
+    }
+
+    private fun findCookieInfo(
+        parameters: Map<String, Any>
+    ): String{
+        val cookie = parameters["cookie"]
+        val token = parameters["code"]
+
+        if (cookie !is String || token !is String || cookie.length != 8 || token.length != 32)
+            return IllegalParameterJson
+
+        return service.findCookieInfo(cookie, token)
+    }
+
 }
-
-data class GetCookieRequest(
-    val cdk: String?
-)
-
-data class ImportCookieRequest(
-    val master: String?,
-    val cookieadd: String?
-)
-
-data class RemoveCookieRequest(
-    val cookie: String?,
-    val code: String?,
-    val del: String?
-)
-
-data class RemarkCookieRequest(
-    val cookie: String?,
-    val code: String?,
-    val target: String?,
-    val remarks: String?
-)
-
-data class SingInRequest(
-    val cookie: String?,
-    val code: String?
-)

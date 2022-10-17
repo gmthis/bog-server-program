@@ -92,4 +92,18 @@ interface CookieDAO {
      */
     @Update("update cookie set remark = #{remark} where token = #{token}")
     fun remarkCookie(token: String, remark: String): Int
+
+    /**
+     * 更新一个cookie的状态,这不会更新全部,只会更新一些时常变化的状态
+     * @return 受影响的行数,返回1
+     */
+    @Update("update cookie set vip = #{vip}, sign = #{sign}, signtime = #{signtime}, point = #{point}, exp = #{exp} where cookie = #{cookie} and token = #{token}")
+    fun updateCookie(cookie: CookieDB): Int
+
+    /**
+     * 检查一个cookie是否被ban
+     * @return 是否被ban
+     */
+    @Select("select is_ban from cookie where cookie = #{cookie} and token = #{token}")
+    fun checkBan(cookie: String, token: String): Boolean
 }
