@@ -8,7 +8,6 @@ import cn.xd.server.bog.util.errorJson
 import cn.xd.server.bog.util.successJson
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.encodeToJsonElement
-import net.coobird.thumbnailator.Thumbnailator
 import net.coobird.thumbnailator.Thumbnails
 import org.apache.commons.io.IOUtils
 import org.slf4j.LoggerFactory
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.util.DigestUtils
 import org.springframework.web.multipart.commons.CommonsMultipartFile
-import java.awt.image.BufferedImage
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -28,6 +26,8 @@ class ImageServiceImpl: ImageService {
 
     @Resource
     lateinit var dao: ImageDao
+    @Resource
+    lateinit var json: Json
 
     companion object{
         private val log = LoggerFactory.getLogger(ImageServiceImpl::class.java)
@@ -83,7 +83,7 @@ class ImageServiceImpl: ImageService {
             imagesSend.add(Image(digest, ext))
         }
 
-        return successJson(200, Json.encodeToJsonElement(imagesSend))
+        return successJson(200, json.encodeToJsonElement(imagesSend))
     }
 
     override fun sendImage(url: String, ext: String, response: HttpServletResponse, path: String) {

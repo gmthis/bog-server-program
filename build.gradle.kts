@@ -48,6 +48,8 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
+
+
 noArg{
 //    是否执行初始化块
     invokeInitializers = true

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!--  导入其他配置文件，作为预设  -->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <!--  设置编码-->
+    <property name="ENCODING" value="UTF-8"/>
+    <!--  设置文件路径-->
+    <property name="LOG_HOME" value="${LOG_PATH:-.}"/>
+    <!-- 常规输出格式：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+    <property name="NORMAL_LOG_PATTERN"
+              value="[%d{yyyy-MM-dd HH:mm:ss.SSS}] %-5level ${PID:- } [%15.15t]%logger{50}.%method（）@%line : %msg%n"/>
+
+
+    <!--  Appender作为日志打印器配置，这里命名随意  -->
+    <!--  ch.qos.logback.core.ConsoleAppender是专用于控制台的Appender  -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>${ENCODING}</charset>
+        </encoder>
+    </appender>
+
+    <!-- ==========================按天输出日志设置========================== -->
+    <appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 按天回滚 daily -->
+            <FileNamePattern>logs/%d{yyyy-MM-dd}/info/info.%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+            <!-- 日志文件保留天数 -->
+            <MaxHistory>30</MaxHistory>
+            <maxFileSize>30MB</maxFileSize>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>             <!-- 设置拦截的对象为INFO级别日志 -->
+            <onMatch>ACCEPT</onMatch>       <!-- 当遇到了INFO级别时，启用该段配置 -->
+            <onMismatch>DENY</onMismatch>   <!-- 没有遇到INFO级别日志时，屏蔽该段配置 -->
+        </filter>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${NORMAL_LOG_PATTERN}</pattern>
+            <charset>${ENCODING}</charset>
+        </encoder>
+        <!-- 日志文件最大的大小 -->
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>10MB</MaxFileSize>
+        </triggeringPolicy>
+    </appender>
+
+    <!-- ==========================按天输出ERROR级别日志设置========================== -->
+    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--        <file>${LOG_HOME}/system-error.log</file>-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 按天回滚 daily -->
+            <FileNamePattern>logs/%d{yyyy-MM-dd}/error/error.%d{yyyy-MM-dd}.%i.log</FileNamePattern>
+            <!-- 日志文件保留天数 -->
+            <MaxHistory>30</MaxHistory>
+            <maxFileSize>30MB</maxFileSize>
+        </rollingPolicy>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>            <!-- 设置拦截的对象为ERROR级别日志 -->
+            <onMatch>ACCEPT</onMatch>       <!-- 当遇到了ERROR级别时，启用该段配置 -->
+            <onMismatch>DENY</onMismatch>   <!-- 没有遇到ERROR级别日志时，屏蔽该段配置 -->
+        </filter>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${NORMAL_LOG_PATTERN}</pattern>
+            <charset>${ENCODING}</charset>
+        </encoder>
+    </appender>
+
+    <!--  指定日志输出级别，以及启用的Appender，这里就使用了我们上面的ConsoleAppender  -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="INFO_FILE"/>
+        <appender-ref ref="ERROR_FILE"/>
+    </root>
+</configuration>

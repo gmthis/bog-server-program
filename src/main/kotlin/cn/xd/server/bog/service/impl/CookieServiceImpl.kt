@@ -5,11 +5,14 @@ import cn.xd.server.bog.entity.cookie.CookieDB
 import cn.xd.server.bog.exitApplication
 import cn.xd.server.bog.service.CookieService
 import cn.xd.server.bog.util.*
-import kotlinx.serialization.json.*
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.encodeToJsonElement
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.Calendar
+import java.util.*
 import javax.annotation.Resource
 
 @Service
@@ -17,6 +20,8 @@ class CookieServiceImpl : CookieService {
 
     @Resource
     private lateinit var dao: CookieDAO
+    @Resource
+    private lateinit var json: Json
 
     companion object {
         private val log = LoggerFactory.getLogger(CookieServiceImpl::class.java)
@@ -86,7 +91,7 @@ class CookieServiceImpl : CookieService {
                 log.error(Exception("堆栈信息").stackTraceToString())
             }
             return successJson(3104, JsonArray(listOf(
-                Json.encodeToJsonElement(dao.findCookie(cookie)!!.getRemarkStyle())
+                json.encodeToJsonElement(dao.findCookie(cookie)!!.getRemarkStyle())
             ))).also {
                 log.info("导入cookie: $cookieAdd, 主cookie为: $master")
             }
@@ -110,7 +115,7 @@ class CookieServiceImpl : CookieService {
             }
 
             return successJson(3104, JsonArray(listOf(
-                Json.encodeToJsonElement(dao.findCookie(cookie)!!.getRemarkStyle())
+                json.encodeToJsonElement(dao.findCookie(cookie)!!.getRemarkStyle())
             ))).also {
                 log.info("导入cookie: $cookieAdd, 主cookie为: $master")
             }
@@ -216,7 +221,7 @@ class CookieServiceImpl : CookieService {
             log.error("更新签到状态时出现错误, 目标: $cookie#$token")
         }
 
-        return successJson(7010, Json.encodeToJsonElement(copy.getSignInfo())).also {
+        return successJson(7010, json.encodeToJsonElement(copy.getSignInfo())).also {
             log.info("$cookie 签到, 当前次数: ${copy.sign}, 下次可签到时间: ${copy.signtime}")
         }
     }
@@ -238,7 +243,7 @@ class CookieServiceImpl : CookieService {
             }
         }
 
-        return successJson(6001, Json.encodeToJsonElement(cookieInfo))
+        return successJson(6001, json.encodeToJsonElement(cookieInfo))
     }
 
     /**

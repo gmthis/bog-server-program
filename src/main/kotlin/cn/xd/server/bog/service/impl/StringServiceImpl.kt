@@ -23,6 +23,8 @@ class StringServiceImpl: StringService {
     private lateinit var cookieDAO: CookieDAO
     @Resource
     private lateinit var stringDAO: StringDAO
+    @Resource
+    private lateinit var json: Json
 
     companion object {
         val forumList = listOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17, 42, 444, 999, 2233, 114514)
@@ -47,7 +49,7 @@ class StringServiceImpl: StringService {
     override fun getSingleContent(id: Int): String {
         val singleContent = stringDAO.findSingleContent(id) ?: return contentNotExist
 
-        return successJson(6001, Json.encodeToJsonElement(singleContent))
+        return successJson(6001, json.encodeToJsonElement(singleContent))
     }
 
     override fun getContentAndReply(id: Int, page: Int, pageDef: Int, order: Int): String {
@@ -64,7 +66,7 @@ class StringServiceImpl: StringService {
             stringDAO.findStringRepliesPaginationDESC(id, jumpOver, pageDef)
         }
 
-        return successJson(6001, Json.encodeToJsonElement(content))
+        return successJson(6001, json.encodeToJsonElement(content))
     }
 
     override fun fuzzySearch(keyword: String, page: Int, pageDef: Int): String {
@@ -72,7 +74,7 @@ class StringServiceImpl: StringService {
 
         val search = stringDAO.fuzzySearch(keyword, jumpOver, pageDef)
 
-        return successJson(6001, Json.encodeToJsonElement(search))
+        return successJson(6001, json.encodeToJsonElement(search))
     }
 
     @Transactional

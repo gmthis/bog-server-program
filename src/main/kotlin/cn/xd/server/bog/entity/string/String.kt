@@ -1,11 +1,10 @@
 package cn.xd.server.bog.entity.string
 
 import cn.xd.server.bog.util.DateSerializable
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
-import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 @Serializable
 data class StringSend(
@@ -22,8 +21,8 @@ data class StringSend(
     val content: String,
     val lock: Boolean?,
     val images: List<Image>?,
-    val replyCount: Int,
-    val hideCount: Int,
+    @SerialName("reply_count") val replyCount: Int,
+    @SerialName("hide_count") val hideCount: Int,
     @Transient val isDel: Boolean = false,
     @Transient val isNotUpdateRoot: Boolean = false,
     val reply: MutableList<Reply> = ArrayList(),

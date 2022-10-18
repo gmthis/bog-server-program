@@ -3,7 +3,6 @@ package cn.xd.server.bog.service.impl
 import cn.xd.server.bog.dao.ForumDAO
 import cn.xd.server.bog.dao.StringDAO
 import cn.xd.server.bog.entity.string.Reply
-import cn.xd.server.bog.entity.string.StringSend
 import cn.xd.server.bog.service.ForumService
 import cn.xd.server.bog.util.errorJson
 import cn.xd.server.bog.util.successJson
@@ -18,16 +17,19 @@ class ForumServiceImpl: ForumService {
     private lateinit var forumDAO: ForumDAO
     @Resource
     private lateinit var stringDAO: StringDAO
+    @Resource
+    private lateinit var json: Json
 
     companion object {
         val forumList = listOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17, 42, 444, 999, 2233, 114514)
 
         val forumNotExist = errorJson(2201, "板块不存在")
         val pageNotExist = errorJson(2202, "页码不存在")
+
     }
 
     override fun getAllForum(): String {
-        return successJson(6001, Json.encodeToJsonElement(forumDAO.getAllForum()))
+        return successJson(6001, json.encodeToJsonElement(forumDAO.getAllForum()))
     }
 
     override fun getForumContent(id: Int, page: Int, pageNum: Int): String {
@@ -40,14 +42,12 @@ class ForumServiceImpl: ForumService {
             else stringDAO.findForumContent(id, jumpOver, pageNum)
         if (forumContent.isEmpty()) return pageNotExist
 
-        val sendContent = ArrayList<StringSend>(forumContent.size)
         for (stringSend in forumContent) {
             val lastFive = getStringRepliesLastFive(stringSend.id, stringSend.replyCount)
             stringSend.reply += lastFive
-            sendContent.add(stringSend)
         }
 
-        return successJson(6001, Json.encodeToJsonElement(sendContent))
+        return successJson(6001, json.encodeToJsonElement(forumContent))
     }
 
     private fun getStringRepliesLastFive(id: Int, replyCount: Int): List<Reply>{

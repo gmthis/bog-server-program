@@ -1,5 +1,6 @@
 package cn.xd.server.bog
 
+import kotlinx.serialization.json.Json
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -23,6 +24,9 @@ class BogApplication: WebMvcConfigurer{
     fun transactionManager(@Autowired datasource: DataSource): TransactionManager{
         return DataSourceTransactionManager(datasource)
     }
+
+    @Bean
+    fun json(): Json = Json { encodeDefaults = true }
 
     override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
         registry.addResourceHandler("/static/**").addResourceLocations("/static/")
