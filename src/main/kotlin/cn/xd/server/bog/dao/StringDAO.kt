@@ -4,7 +4,6 @@ import cn.xd.server.bog.entity.string.Image
 import cn.xd.server.bog.entity.string.Reply
 import cn.xd.server.bog.entity.string.SingleContent
 import cn.xd.server.bog.entity.string.StringSend
-import cn.xd.server.bog.util.typehandler.ImageJsonHandler
 import org.apache.ibatis.annotations.*
 
 @Mapper
@@ -19,7 +18,10 @@ interface StringDAO {
     @Select("select c1.id, res, time, name, emoji, cookie, admin, content, images from all_string c1 join (select c2.id from reply_string c2 where c2.res = #{id} and c2.is_del != true) c3 on c1.id = c3.id")
     fun findStringReplies(id: Int):List<Reply>
 
-    @Select("select c1.id, res, time, name, emoji, cookie, admin, content, images from all_string c1 join (select c2.id from reply_string c2 where c2.res = #{id} and c2.is_del != true) c3 on c1.id = c3.id order by c1.time desc limit #{pageNum}, #{num}")
+    @Select("select c1.id, res, time, name, emoji, cookie, admin, content, images" +
+            " from all_string c1 join " +
+            "(select c2.id from reply_string c2 where c2.res = #{id} and c2.is_del != true) c3" +
+            " on c1.id = c3.id order by c1.time desc limit #{pageNum}, #{num}")
     fun findStringRepliesPaginationDESC(id: Int, pageNum: Int, num: Int): List<Reply>
 
     @Select("select c1.id, res, time, name, emoji, cookie, admin, content, images from all_string c1 join (select c2.id from reply_string c2 where c2.res = #{id} and c2.is_del != true) c3 on c1.id = c3.id order by c1.time limit #{pageNum}, #{num}")

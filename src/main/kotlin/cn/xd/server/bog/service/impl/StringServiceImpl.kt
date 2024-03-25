@@ -69,6 +69,7 @@ class StringServiceImpl: StringService {
         return successJson(6001, json.encodeToJsonElement(content))
     }
 
+
     override fun fuzzySearch(keyword: String, page: Int, pageDef: Int): String {
         val jumpOver = if (page == 1) 0 else (page * pageDef) - pageDef
 
@@ -148,7 +149,13 @@ class StringServiceImpl: StringService {
             )
             val copy = findContent.copy(
                 replyCount = findContent.replyCount + 1,
-                hideCount = if (findContent.hideCount != 0) findContent.hideCount + 1 else if ((findContent.replyCount + 1) > 5) (findContent.replyCount + 1) - 5 else 0,
+                hideCount = if (findContent.hideCount != 0)
+                    findContent.hideCount + 1
+                else
+                    if ((findContent.replyCount + 1) > 5)
+                            (findContent.replyCount + 1) - 5
+                    else
+                        0,
                 root = if (findContent.isNotUpdateRoot) findContent.root else System.currentTimeMillis()
             )
 

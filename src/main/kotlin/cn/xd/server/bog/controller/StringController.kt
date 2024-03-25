@@ -21,7 +21,7 @@ class StringController {
 
     @PostMapping(
         "/api/thread",
-        headers = ["Content-Type=application/x-www-form-urlencoded"]
+        headers = ["Content-Type=application/x-www-form-urlencoded"],produces = ["application/json; charset=utf-8"]
     )
     fun getSingleContentFrom(
         @RequestParam parameters: Map<String, Any>
@@ -31,7 +31,7 @@ class StringController {
 
     @PostMapping(
         "/api/thread",
-        headers = ["Content-Type=application/json"]
+        headers = ["Content-Type=application/json"],produces = ["application/json; charset=utf-8"]
     )
     fun getSingleContentJson(
         @RequestBody parameters: Map<String, Any>
@@ -52,7 +52,7 @@ class StringController {
 
     @PostMapping(
         "/api/threads",
-        headers = ["Content-Type=application/x-www-form-urlencoded"]
+        headers = ["Content-Type=application/x-www-form-urlencoded"],produces = ["application/json; charset=utf-8"]
     )
     fun getContentAndReplyFrom(
         @RequestParam parameters: Map<String, Any>
@@ -62,7 +62,7 @@ class StringController {
 
     @PostMapping(
         "/api/threads",
-        headers = ["Content-Type=application/json"]
+        headers = ["Content-Type=application/json"],produces = ["application/json; charset=utf-8"]
     )
     fun getContentAndReplyJson(
         @RequestBody parameters: Map<String, Any>
@@ -99,7 +99,7 @@ class StringController {
 
     @PostMapping(
         "/search",
-        headers = ["Content-Type=application/x-www-form-urlencoded"]
+        headers = ["Content-Type=application/x-www-form-urlencoded"],produces = ["application/json; charset=utf-8"]
     )
     fun fuzzySearchFrom(
         @RequestParam parameters: Map<String, Any>
@@ -109,7 +109,7 @@ class StringController {
 
     @PostMapping(
         "/search",
-        headers = ["Content-Type=application/json"]
+        headers = ["Content-Type=application/json"],produces = ["application/json; charset=utf-8"]
     )
     fun fuzzySearchJson(
         @RequestBody parameters: Map<String, Any>
@@ -139,7 +139,7 @@ class StringController {
 
     @PostMapping(
         "/post/del",
-        headers = ["Content-Type=application/x-www-form-urlencoded"]
+        headers = ["Content-Type=application/x-www-form-urlencoded"],produces = ["application/json; charset=utf-8"]
     )
     fun delStringFrom(
         @RequestParam parameters: Map<String, Any>
@@ -149,7 +149,7 @@ class StringController {
 
     @PostMapping(
         "/post/del",
-        headers = ["Content-Type=application/json"]
+        headers = ["Content-Type=application/json"],produces = ["application/json; charset=utf-8"]
     )
     fun delStringJson(
         @RequestBody parameters: Map<String, Any>
@@ -172,7 +172,7 @@ class StringController {
 
     @PostMapping(
         "/post/post",
-        headers = ["Content-Type=application/x-www-form-urlencoded"]
+        headers = ["Content-Type=application/x-www-form-urlencoded"],produces = ["application/json; charset=utf-8"]
     )
     fun sendStringFrom(
         @RequestParam parameters: Map<String, Any>
@@ -182,7 +182,7 @@ class StringController {
 
     @PostMapping(
         "/post/post",
-        headers = ["Content-Type=application/json"]
+        headers = ["Content-Type=application/json"],produces = ["application/json; charset=utf-8"]
     )
     fun sendStringJson(
         @RequestBody parameters: Map<String, Any>

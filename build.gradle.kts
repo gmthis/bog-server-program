@@ -25,16 +25,16 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2")
+    implementation("org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.1")
     runtimeOnly("mysql:mysql-connector-java")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
     implementation("org.springframework.boot:spring-boot-starter-logging")
-    implementation("com.alibaba:fastjson:2.0.15")
+    implementation("com.alibaba:fastjson:2.0.25")
     implementation("commons-io:commons-io:2.11.0")
-    implementation("commons-fileupload:commons-fileupload:1.4")
-    implementation("net.coobird:thumbnailator:0.4.17")
+    implementation("commons-fileupload:commons-fileupload:1.5")
+    implementation("net.coobird:thumbnailator:0.4.19")
 }
 
 tasks.withType<KotlinCompile> {

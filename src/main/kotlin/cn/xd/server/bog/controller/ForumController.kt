@@ -3,7 +3,10 @@ package cn.xd.server.bog.controller
 import cn.xd.server.bog.service.ForumService
 import cn.xd.server.bog.util.IllegalParameterJson
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.ResponseBody
 import javax.annotation.Resource
 
 @Controller
@@ -13,14 +16,14 @@ class ForumController {
     @Resource
     private lateinit var service: ForumService
 
-    @PostMapping("/api/forumlist")
+    @PostMapping("/api/forumlist",produces = ["application/json; charset=utf-8"])
     fun getAllForum(): String{
         return service.getAllForum()
     }
 
     @PostMapping(
         "/api/forum",
-        headers = ["Content-Type=application/x-www-form-urlencoded"]
+        headers = ["Content-Type=application/x-www-form-urlencoded"],produces = ["application/json; charset=utf-8"]
     )
     fun getForumContentFrom(
         @RequestParam parameters: Map<String, Any>
@@ -30,7 +33,7 @@ class ForumController {
 
     @PostMapping(
         "/api/forum",
-        headers = ["Content-Type=application/json"]
+        headers = ["Content-Type=application/json"],produces = ["application/json; charset=utf-8"]
     )
     fun getForumContentJson(
         @RequestBody parameters: Map<String, Any>

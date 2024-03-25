@@ -18,7 +18,7 @@ class CookieController {
 
     @PostMapping(
         "/post/cookieGit",
-        headers = ["Content-Type=application/x-www-form-urlencoded"]
+        headers = ["Content-Type=application/x-www-form-urlencoded"],produces = ["application/json; charset=utf-8"]
     )
     fun getCookieFrom(
         @RequestParam parameters: Map<String, Any>
@@ -28,7 +28,7 @@ class CookieController {
 
     @PostMapping(
         "/post/cookieGit",
-        headers = ["Content-Type=application/json"]
+        headers = ["Content-Type=application/json"],produces = ["application/json; charset=utf-8"]
     )
     fun getCookieJson(
         @RequestBody parameters: Map<String, Any>
@@ -44,7 +44,7 @@ class CookieController {
 
     @PostMapping(
         "/api/cookieAdd",
-        headers = ["Content-Type=application/x-www-form-urlencoded"]
+        headers = ["Content-Type=application/x-www-form-urlencoded"],produces = ["application/json; charset=utf-8"]
     )
     fun importCookieFrom(
         @RequestParam parameters: Map<String, Any>
@@ -54,7 +54,7 @@ class CookieController {
 
     @PostMapping(
         "/api/cookieAdd",
-        headers = ["Content-Type=application/json"]
+        headers = ["Content-Type=application/json"],produces = ["application/json; charset=utf-8"]
     )
     fun importCookieJson(
         @RequestBody parameters: Map<String, Any>
@@ -75,7 +75,7 @@ class CookieController {
 
     @PostMapping(
         "/api/cookiedel",
-        headers = ["Content-Type=application/x-www-form-urlencoded"]
+        headers = ["Content-Type=application/x-www-form-urlencoded"],produces = ["application/json; charset=utf-8"]
     )
     fun removeCookieFrom(
         @RequestParam parameters: Map<String, Any>
@@ -85,7 +85,7 @@ class CookieController {
 
     @PostMapping(
         "/api/cookiedel",
-        headers = ["Content-Type=application/json"]
+        headers = ["Content-Type=application/json"],produces = ["application/json; charset=utf-8"]
     )
     fun removeCookieJson(
         @RequestBody parameters: Map<String, Any>
@@ -109,7 +109,7 @@ class CookieController {
 
     @PostMapping(
         "/api/remarks",
-        headers = ["Content-Type=application/x-www-form-urlencoded"]
+        headers = ["Content-Type=application/x-www-form-urlencoded"],produces = ["application/json; charset=utf-8"]
     )
     fun remarkCookieFrom(
         @RequestParam parameters: Map<String, Any>
@@ -119,7 +119,7 @@ class CookieController {
 
     @PostMapping(
         "/api/remarks",
-        headers = ["Content-Type=application/json"]
+        headers = ["Content-Type=application/json"],produces = ["application/json; charset=utf-8"]
     )
     fun remarkCookieJson(
         @RequestBody parameters: Map<String, Any>
@@ -149,7 +149,7 @@ class CookieController {
 
     @PostMapping(
         "/api/sign",
-        headers = ["Content-Type=application/x-www-form-urlencoded"]
+        headers = ["Content-Type=application/x-www-form-urlencoded"],produces = ["application/json; charset=utf-8"]
     )
     fun signInFrom(
         @RequestParam parameters: Map<String, Any>
@@ -159,7 +159,7 @@ class CookieController {
 
     @PostMapping(
         "/api/sign",
-        headers = ["Content-Type=application/json"]
+        headers = ["Content-Type=application/json"],produces = ["application/json; charset=utf-8"]
     )
     fun signInJson(
         @RequestBody parameters: Map<String, Any>
@@ -182,7 +182,7 @@ class CookieController {
 
     @PostMapping(
         "/api/userinfo",
-        headers = ["Content-Type=application/x-www-form-urlencoded"]
+        headers = ["Content-Type=application/x-www-form-urlencoded"],produces = ["application/json; charset=utf-8"]
     )
     fun findCookieInfoFrom(
         @RequestParam parameters: Map<String, Any>
@@ -192,7 +192,7 @@ class CookieController {
 
     @PostMapping(
         "/api/userinfo",
-        headers = ["Content-Type=application/json"]
+        headers = ["Content-Type=application/json"],produces = ["application/json; charset=utf-8"]
     )
     fun findCookieInfoJson(
         @RequestBody parameters: Map<String, Any>
